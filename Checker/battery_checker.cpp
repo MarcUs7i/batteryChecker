@@ -7,7 +7,14 @@ void CheckBatteryStatus()
     SYSTEM_POWER_STATUS powerStatus;
     if (GetSystemPowerStatus(&powerStatus))
     {
-            int batteryPercentage = static_cast<int>(powerStatus.BatteryLifePercent);
+        int batteryPercentage = static_cast<int>(powerStatus.BatteryLifePercent);
+
+        if (batteryPercentage == 255)
+        {
+            std::wstring unknownMessage = L"Battery percentage is unknown.";
+            MessageBoxW(NULL, unknownMessage.c_str(), L"Battery Status", MB_OK | MB_ICONINFORMATION);
+            exit(0);
+        }
 
         if (batteryPercentage <= 20 && powerStatus.ACLineStatus != 1)
         {
